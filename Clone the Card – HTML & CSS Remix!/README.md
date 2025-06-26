@@ -1,11 +1,6 @@
 # 🛒 Amazon Product Card Clone – Skytech Gaming PC
 
 This is a pixel-perfect HTML & CSS clone of an Amazon product card featuring a Skytech Gaming PC. Built as part of the "Clone the Card – HTML & CSS Remix" frontend challenge.
-
-## 💻 Preview
-
-![Preview Screenshot](./images/preview.png) <!-- replace with your actual screenshot path -->
-
 ## 🔧 Tech Stack
 
 - HTML5
