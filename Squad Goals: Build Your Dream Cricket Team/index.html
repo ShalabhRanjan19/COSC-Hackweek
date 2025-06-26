@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Challengers Bangalore - Dream Team</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-section">
+                <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?w=80&h=80&fit=crop&crop=center" alt="RCB Logo" class="logo">
+                <div class="team-info">
+                    <h1 class="team-name">Royal Challengers Bangalore</h1>
+                    <p class="team-slogan">"Ee Sala Cup Namde!"</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2 class="hero-title">Dream Cricket Team</h2>
+            <p class="hero-subtitle">Meet our superstar players who make RCB the ultimate cricket force</p>
+        </div>
+        <div class="hero-bg"></div>
+    </section>
+
+    <!-- Players Grid Section -->
+    <section class="players-section">
+        <div class="container">
+            <h2 class="section-title">Our Champions</h2>
+            <div class="players-grid" id="playersGrid">
+                <!-- Players will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Player Details -->
+    <div class="modal" id="playerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" id="closeModal">&times;</span>
+                <img id="modalPlayerImage" src="" alt="Player" class="modal-player-image">
+                <div class="modal-player-info">
+                    <h2 id="modalPlayerName"></h2>
+                    <p id="modalPlayerRole"></p>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Strike Rate</div>
+                        <div class="stat-value" id="modalStrikeRate"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Matches Played</div>
+                        <div class="stat-value" id="modalMatches"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Jersey Number</div>
+                        <div class="stat-value" id="modalJersey"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Best Performance</div>
+                        <div class="stat-value" id="modalBestPerformance"></div>
+                    </div>
+                </div>
+                
+                <div class="player-description">
+                    <h3>About</h3>
+                    <p id="modalDescription"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; Shalabh Ranjan's Dream Team. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
