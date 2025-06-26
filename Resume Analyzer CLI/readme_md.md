@@ -26,11 +26,9 @@ cd resume-analyzer-cli
 ```
 
 2. Install required dependencies:
-```bash
-pip install -r requirements.txt
-```
 
-Or install manually:
+
+ install :
 ```bash
 pip install PyPDF2 pdfminer.six
 ```
@@ -57,47 +55,6 @@ python resume_analyzer.py resume.pdf --detailed
 python resume_analyzer.py --help
 ```
 
-## Example Output
-
-```
-============================================================
-           RESUME ANALYSIS RESULTS
-============================================================
-
-📊 DOCUMENT STATS:
-   Total words extracted: 342
-
-🏗️  RESUME STRUCTURE:
-   ✅ Contact Info
-   ✅ Experience
-   ✅ Education
-   ✅ Skills
-   ❌ Projects
-
-🔧 TECHNICAL SKILLS FOUND:
-
-   Programming Languages:
-     • Python: 3 mention(s)
-     • Java: 2 mention(s)
-     • JavaScript: 1 mention(s)
-
-   Databases:
-     • SQL: 2 mention(s)
-     • MySQL: 1 mention(s)
-
-   Machine Learning:
-     • Machine Learning: 2 mention(s)
-     • TensorFlow: 1 mention(s)
-
-💡 SOFT SKILLS FOUND:
-     • Leadership: 1 mention(s)
-     • Communication: 1 mention(s)
-
-📈 IMPROVEMENT SUGGESTIONS:
-   1. Add a projects section to showcase your work
-   2. Add cloud/DevOps skills if relevant to your field
-   3. Expand your web technologies section
-```
 
 ## Supported File Formats
 
@@ -129,45 +86,9 @@ The tool checks for these essential resume sections:
 - Skills section
 - Projects/portfolio
 
-## Limitations
-
-- Only supports PDF files
-- Accuracy depends on PDF text extraction quality
-- Skill matching is based on exact word/phrase matching
-- May not catch all variations of skill names
 
 ## Contributing
 
 Feel free to submit issues and enhancement requests!
+Made with ❤️ Shalabh Ranjan
 
-## License
-
-This project is open source and available under the MIT License.
-
-## Development
-
-To extend the skill categories, modify the `tech_skills` dictionary in the `ResumeAnalyzer` class. To add new analysis features, extend the `analyze_resume_structure` method.
-
-## Troubleshooting
-
-**Common Issues:**
-
-1. **"Required libraries not installed"**
-   - Run: `pip install PyPDF2 pdfminer.six`
-
-2. **"Could not extract meaningful text from PDF"**
-   - The PDF might be image-based or encrypted
-   - Try converting to a text-based PDF first
-
-3. **Low skill detection**
-   - Ensure skills are spelled correctly in the resume
-   - The tool looks for exact matches (case-insensitive)
-
-## Sample Test
-
-Create a test resume PDF with various skills mentioned and run:
-```bash
-python resume_analyzer.py test_resume.pdf --detailed --output test_results.json
-```
-
-This will show you exactly how the tool processes and analyzes resume content.
