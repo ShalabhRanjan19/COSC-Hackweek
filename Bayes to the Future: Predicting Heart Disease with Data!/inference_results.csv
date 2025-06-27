@@ -1,0 +1,13 @@
+Query,Probability
+P(Heart Disease | Age=young),0.5576199511099281
+P(Heart Disease | Age=middle),0.5412509070252783
+P(Heart Disease | Age=old),0.534653342685852
+P(Heart Disease | Cholesterol=low),0.5825450111539816
+P(Heart Disease | Cholesterol=normal),0.4309918583083369
+P(Heart Disease | Cholesterol=high),0.6678481484936106
+"P(Heart Disease | age_group=old, chol_level=high)",0.6678481484936107
+"P(Heart Disease | age_group=young, chol_level=low)",0.5815523271960381
+"P(Heart Disease | age_group=middle, chol_level=normal)",0.4304262766867144
+"P(Heart Disease | age_group=old, fbs=1)",0.5269422676940633
+P(No Heart Disease),0.4573190586814884
+P(Heart Disease),0.5426809413185116
