@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeZoneBuddy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .city-input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .city-input select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .city-input select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .add-city-btn, .find-times-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-city-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .add-city-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .find-times-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .find-times-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #c82333;
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .time-slots {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .time-slots h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .time-slot {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #28a745;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .time-slot:hover {
+            transform: translateX(5px);
+        }
+
+        .time-slot h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .local-times {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .local-time {
+            background: #e9ecef;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .local-time strong {
+            color: #495057;
+        }
+
+        .no-overlap {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .local-times {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 TimeZoneBuddy</h1>
+            <p>Find the perfect meeting time across different time zones</p>
+        </div>
+
+        <div class="input-section">
+            <div id="cityInputs">
+                <div class="input-group">
+                    <div class="city-input">
+                        <select class="city-select">
+                            <option value="">Select a city...</option>
+                        </select>
+                    </div>
+                    <button class="add-city-btn" onclick="addCityInput()">+ Add City</button>
+                </div>
+                <div class="input-group">
+                    <div class="city-input">
+                        <select class="city-select">
+                            <option value="">Select a city...</option>
+                        </select>
+                    </div>
+                    <button class="remove-btn" onclick="removeCityInput(this)" style="display: none;">Remove</button>
+                </div>
+            </div>
+            <button class="find-times-btn" onclick="findMeetingTimes()">Find Meeting Times</button>
+        </div>
+
+        <div id="results" class="results-section">
+            <div class="time-slots">
+                <h3>Available Meeting Times (9 AM - 8 PM overlap)</h3>
+                <div id="timeSlots"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Major cities with their timezones
+        const cities = {
+            'New York': 'America/New_York',
+            'Los Angeles': 'America/Los_Angeles',
+            'Chicago': 'America/Chicago',
+            'London': 'Europe/London',
+            'Paris': 'Europe/Paris',
+            'Berlin': 'Europe/Berlin',
+            'Tokyo': 'Asia/Tokyo',
+            'Sydney': 'Australia/Sydney',
+            'Mumbai': 'Asia/Kolkata',
+            'Singapore': 'Asia/Singapore',
+            'Dubai': 'Asia/Dubai',
+            'Moscow': 'Europe/Moscow',
+            'São Paulo': 'America/Sao_Paulo',
+            'Toronto': 'America/Toronto',
+            'Vancouver': 'America/Vancouver',
+            'Hong Kong': 'Asia/Hong_Kong',
+            'Seoul': 'Asia/Seoul',
+            'Bangkok': 'Asia/Bangkok',
+            'Cairo': 'Africa/Cairo',
+            'Johannesburg': 'Africa/Johannesburg',
+            'Mexico City': 'America/Mexico_City',
+            'Buenos Aires': 'America/Argentina/Buenos_Aires',
+            'Lima': 'America/Lima',
+            'Istanbul': 'Europe/Istanbul',
+            'Tel Aviv': 'Asia/Jerusalem',
+            'Shanghai': 'Asia/Shanghai',
+            'Beijing': 'Asia/Shanghai',
+            'Jakarta': 'Asia/Jakarta',
+            'Manila': 'Asia/Manila',
+            'Kuala Lumpur': 'Asia/Kuala_Lumpur',
+            'Perth': 'Australia/Perth',
+            'Melbourne': 'Australia/Melbourne',
+            'Auckland': 'Pacific/Auckland',
+            'Fiji': 'Pacific/Fiji',
+            'Honolulu': 'Pacific/Honolulu',
+            'Anchorage': 'America/Anchorage',
+            'Denver': 'America/Denver',
+            'Phoenix': 'America/Phoenix',
+            'Atlanta': 'America/New_York',
+            'Miami': 'America/New_York',
+            'Seattle': 'America/Los_Angeles',
+            'San Francisco': 'America/Los_Angeles',
+            'Las Vegas': 'America/Los_Angeles',
+            'Dallas': 'America/Chicago',
+            'Houston': 'America/Chicago'
+        };
+
+        let selectedCities = [];
+
+        // Initialize city dropdowns
+        function initializeCitySelects() {
+            const selects = document.querySelectorAll('.city-select');
+            selects.forEach(select => {
+                select.innerHTML = '<option value="">Select a city...</option>';
+                Object.keys(cities).sort().forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        function addCityInput() {
+            const cityInputs = document.getElementById('cityInputs');
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group';
+            
+            inputGroup.innerHTML = `
+                <div class="city-input">
+                    <select class="city-select">
+                        <option value="">Select a city...</option>
+                    </select>
+                </div>
+                <button class="remove-btn" onclick="removeCityInput(this)">Remove</button>
+            `;
+            
+            cityInputs.appendChild(inputGroup);
+            
+            // Initialize the new select
+            const newSelect = inputGroup.querySelector('.city-select');
+            Object.keys(cities).sort().forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                newSelect.appendChild(option);
+            });
+
+            // Show remove buttons for all inputs except the first two
+            updateRemoveButtons();
+        }
+
+        function removeCityInput(button) {
+            const inputGroup = button.parentElement;
+            inputGroup.remove();
+            updateRemoveButtons();
+        }
+
+        function updateRemoveButtons() {
+            const inputGroups = document.querySelectorAll('#cityInputs .input-group');
+            inputGroups.forEach((group, index) => {
+                const removeBtn = group.querySelector('.remove-btn');
+                if (removeBtn) {
+                    removeBtn.style.display = index < 2 ? 'none' : 'inline-block';
+                }
+            });
+        }
+
+        function getSelectedCities() {
+            const selects = document.querySelectorAll('.city-select');
+            const selected = [];
+            selects.forEach(select => {
+                if (select.value) {
+                    selected.push(select.value);
+                }
+            });
+            return [...new Set(selected)]; // Remove duplicates
+        }
+
+        function findMeetingTimes() {
+            selectedCities = getSelectedCities();
+            
+            if (selectedCities.length < 2) {
+                showError('Please select at least 2 cities to find meeting times.');
+                return;
+            }
+
+            const overlappingSlots = calculateOverlappingTimes();
+            displayResults(overlappingSlots);
+        }
+
+        function showError(message) {
+            const results = document.getElementById('results');
+            results.innerHTML = `<div class="error">${message}</div>`;
+            results.classList.add('show');
+        }
+
+        function calculateOverlappingTimes() {
+            const today = new Date();
+            const overlappingSlots = [];
+
+            // Check each hour from 0 to 23 UTC
+            for (let utcHour = 0; utcHour < 24; utcHour++) {
+                const utcTime = new Date(today);
+                utcTime.setUTCHours(utcHour, 0, 0, 0);
+
+                let allAvailable = true;
+                const localTimes = {};
+
+                // Check if this UTC hour falls within 9 AM - 8 PM for all selected cities
+                for (const city of selectedCities) {
+                    const timezone = cities[city];
+                    const localTime = new Date(utcTime.toLocaleString("en-US", {timeZone: timezone}));
+                    const localHour = localTime.getHours();
+
+                    localTimes[city] = {
+                        time: localTime,
+                        hour: localHour,
+                        formatted: localTime.toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true,
+                            timeZone: timezone
+                        })
+                    };
+
+                    // Check if local time is between 9 AM (9) and 8 PM (20)
+                    if (localHour < 9 || localHour >= 20) {
+                        allAvailable = false;
+                        break;
+                    }
+                }
+
+                if (allAvailable) {
+                    overlappingSlots.push({
+                        utcHour,
+                        localTimes
+                    });
+                }
+            }
+
+            return overlappingSlots;
+        }
+
+        function displayResults(overlappingSlots) {
+            const results = document.getElementById('results');
+            const timeSlots = document.getElementById('timeSlots');
+
+            if (overlappingSlots.length === 0) {
+                timeSlots.innerHTML = `
+                    <div class="no-overlap">
+                        <h4>😔 No overlapping time slots found</h4>
+                        <p>Unfortunately, there are no hours where all selected cities have availability between 9 AM - 8 PM. Consider adjusting your city selection or expanding the time window.</p>
+                    </div>
+                `;
+            } else {
+                timeSlots.innerHTML = overlappingSlots.map(slot => {
+                    const utcTime = new Date();
+                    utcTime.setUTCHours(slot.utcHour, 0, 0, 0);
+                    const utcFormatted = utcTime.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true,
+                        timeZone: 'UTC'
+                    });
+
+                    const localTimesHtml = Object.entries(slot.localTimes).map(([city, timeData]) => 
+                        `<div class="local-time"><strong>${city}:</strong> ${timeData.formatted}</div>`
+                    ).join('');
+
+                    return `
+                        <div class="time-slot">
+                            <h4>Meeting Time: ${utcFormatted} UTC</h4>
+                            <div class="local-times">
+                                ${localTimesHtml}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            results.classList.add('show');
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCitySelects();
+            updateRemoveButtons();
+        });
+    </script>
+</body>
+</html>
